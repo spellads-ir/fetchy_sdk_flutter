@@ -1,3 +1,8 @@
+## 1.3.10
+
+- Replace the Android local AAR fallback with source-based SDK bootstrapping so consuming Flutter apps can build release APKs without a published Maven artifact.
+- Propagate `sdk.dir` into embedded Fetchy SDK checkouts so nested Android builds can resolve the local Android SDK consistently.
+
 ## 1.3.9
 
 - Fix Android dependency resolution for consuming Flutter apps by bootstrapping the embedded Fetchy SDK from GitHub when no local or vendored SDK checkout is available.

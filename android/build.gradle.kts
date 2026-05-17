@@ -1,5 +1,7 @@
+import org.gradle.api.GradleException
 import org.gradle.api.tasks.GradleBuild
 import java.net.URL
+import java.util.Properties
 import java.util.zip.ZipInputStream
 
 group = "com.fetchy.fetchy_sdk_flutter"
@@ -30,6 +32,63 @@ fun downloadFile(sourceUrl: String, targetFile: File) {
         targetFile.outputStream().use { output ->
             input.copyTo(output)
         }
+    }
+}
+
+fun readPropertyFromFile(propertyFile: File, propertyName: String): String? {
+    if (!propertyFile.exists()) {
+        return null
+    }
+
+    val properties = Properties()
+    propertyFile.inputStream().use { input ->
+        properties.load(input)
+    }
+
+    return properties.getProperty(propertyName)?.takeIf { it.isNotBlank() }
+}
+
+fun resolveAndroidSdkDir(): String? {
+    val localPropertiesCandidates = listOf(
+        rootProject.file("local.properties"),
+        project.file("local.properties"),
+        rootProject.projectDir.parentFile?.resolve("local.properties"),
+    ).filterNotNull().distinct()
+
+    for (propertyFile in localPropertiesCandidates) {
+        val sdkDir = readPropertyFromFile(propertyFile, "sdk.dir")
+        if (sdkDir != null) {
+            return sdkDir
+        }
+    }
+
+    return System.getenv("ANDROID_HOME")?.takeIf { it.isNotBlank() }
+        ?: System.getenv("ANDROID_SDK_ROOT")?.takeIf { it.isNotBlank() }
+}
+
+fun ensureEmbeddedSdkLocalProperties(embeddedSdkRootDir: File) {
+    val sdkDir = resolveAndroidSdkDir()
+        ?: throw GradleException(
+            "Android SDK location not found. Set sdk.dir in local.properties or define ANDROID_HOME/ANDROID_SDK_ROOT before building fetchy_sdk_flutter."
+        )
+
+    val localPropertiesFile = embeddedSdkRootDir.resolve("local.properties")
+    val properties = Properties()
+
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use { input ->
+            properties.load(input)
+        }
+    }
+
+    if (properties.getProperty("sdk.dir") == sdkDir) {
+        return
+    }
+
+    localPropertiesFile.parentFile.mkdirs()
+    properties.setProperty("sdk.dir", sdkDir)
+    localPropertiesFile.outputStream().use { output ->
+        properties.store(output, null)
     }
 }
 
@@ -99,6 +158,9 @@ val embeddedSdkAarFile = provider {
 
 val buildEmbeddedFetchySdk by tasks.registering(GradleBuild::class) {
     dependsOn(prepareEmbeddedFetchySdkSource)
+    doFirst {
+        ensureEmbeddedSdkLocalProperties(resolveEmbeddedSdkRootDir())
+    }
     dir = resolveEmbeddedSdkRootDir()
     tasks = listOf(":fetchy-sdk:assembleRelease")
 }
@@ -180,15 +242,7 @@ dependencies {
     if (embeddedSdkProject != null) {
         implementation(embeddedSdkProject)
     } else {
-        implementation(files(embeddedSdkAarFile).builtBy(buildEmbeddedFetchySdk))
-
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
-        implementation("androidx.core:core-ktx:1.13.1")
-        implementation("androidx.work:work-runtime-ktx:2.9.0")
-        implementation("androidx.room:room-runtime:2.6.1")
-        implementation("androidx.room:room-ktx:2.6.1")
-        implementation("com.caverock:androidsvg-aar:1.4")
-        implementation("com.squareup.okhttp3:okhttp:4.12.0")
+        implementation("com.fetchy:fetchy-sdk:$embeddedSdkVersion")
     }
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
