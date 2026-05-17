@@ -1,6 +1,10 @@
 rootProject.name = 'fetchy_sdk_flutter'
 
-include ':fetchy-sdk'
 def localSdkProjectDir = new File(settingsDir, '../../fetchy_sdk/fetchy-sdk')
 def importedSdkProjectDir = new File(settingsDir, 'third_party/fetchy-android/fetchy-sdk')
-project(':fetchy-sdk').projectDir = localSdkProjectDir.exists() ? localSdkProjectDir : importedSdkProjectDir
+def embeddedSdkProjectDir = localSdkProjectDir.exists() ? localSdkProjectDir : (importedSdkProjectDir.exists() ? importedSdkProjectDir : null)
+
+if (embeddedSdkProjectDir != null) {
+	include ':fetchy-sdk'
+	project(':fetchy-sdk').projectDir = embeddedSdkProjectDir
+}

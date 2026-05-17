@@ -1,3 +1,8 @@
+## 1.3.9
+
+- Fix Android dependency resolution for consuming Flutter apps by bootstrapping the embedded Fetchy SDK from GitHub when no local or vendored SDK checkout is available.
+- Switch the vendored Fetchy SDK submodule URL to HTTPS for easier cloning in non-SSH environments.
+
 ## 1.3.8
 
 - Fix Android plugin packaging so the Java plugin entrypoint is discoverable and consumable from Flutter app builds.
