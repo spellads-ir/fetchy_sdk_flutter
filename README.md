@@ -1,51 +1,78 @@
-# Fetchy Flutter SDK
 
-Fetchy Flutter is a pull-only wrapper around the embedded Fetchy Android SDK.
+# راهنمای نصب Fetchy SDK Flutter
 
-The current surface focuses on:
-- initialization
-- Android notification permission status
-- backend-driven pull notifications
+## 1. افزودن دسترسی نوتیفیکیشن در Android
 
-## Usage
+فایل زیر را باز کنید:
 
-```dart
-import 'package:fetchy_sdk_flutter/fetchy_sdk_flutter.dart';
+```txt
+android/app/src/main/AndroidManifest.xml
+````
 
-final sdk = FetchySdkFlutter();
+سپس این permission را داخل تگ اصلی `manifest` اضافه کنید:
 
-await sdk.initialize();
-
-final permission = await sdk.getNotificationPermissionStatus();
-final syncedPermission = await sdk.syncNotificationPermissionStatus();
+```xml
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 ```
 
-## Android Asset Config
+---
 
-Place `fetchy-config.json` in your Android app assets:
+## 2. دانلود فایل تنظیمات SDK
 
-```json
-{
-  "environment": "production",
-  "base_url": "https://your-api.example.com",
-  "api_key": "your_fetchy_app_api_key",
-  "pull": {
-    "enabled": true,
-    "worker_enabled": true,
-    "poll_interval_minutes": 15
-  },
-  "notification": {
-    "channel_id": "pn_notification_channel",
-    "channel_name": "Fetchy Notifications",
-    "channel_description": "Notifications delivered by the Fetchy SDK."
-  }
+از پنل سایت، فایل JSON مربوط به اپلیکیشن خود را دانلود کنید.
+
+سپس نام فایل را به شکل زیر تغییر دهید:
+
+```txt
+fetchy-config.json
+```
+
+و آن را در مسیر زیر قرار دهید:
+
+```txt
+android/app/src/main/assets
+```
+
+> اگر پوشه `assets` وجود ندارد، آن را بسازید.
+
+---
+
+## 3. افزودن پکیج به `pubspec.yaml`
+
+در فایل `pubspec.yaml`، بخش `dependencies` را به شکل زیر تکمیل کنید:
+
+```yaml
+dependencies:
+  fetchy_sdk_flutter:
+    git:
+      url: https://github.com/spellads-ir/fetchy_sdk_flutter.git
+      ref: main
+```
+
+سپس دستور زیر را اجرا کنید:
+
+```bash
+flutter pub get
+```
+
+---
+
+## 4. مقداردهی اولیه SDK
+
+در اولین صفحه یا کلاس اصلی اپلیکیشن، متد `initialize` را داخل `initState` فراخوانی کنید:
+
+```dart
+@override
+void initState() {
+  super.initState();
+  FetchySdkFlutter().initialize();
 }
 ```
 
-## Pull-Only Contract
+---
 
-- No third-party push dependency is needed.
-- No push token update API exists.
-- No push-message parsing or forwarding API exists.
-- Notifications are handled only through backend polling.
-- Direct click ack is sent only for internal app links opened by the SDK. External web links are opened normally without client-side ack.
+## نصب کامل شد
+
+بعد از انجام مراحل بالا، Fetchy SDK روی پروژه Flutter شما فعال خواهد شد.
+
+```
