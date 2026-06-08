@@ -1,41 +1,36 @@
+# راهنمای استفاده از Fetchy SDK Flutter
 
-# راهنمای نصب Fetchy SDK Flutter
+این پکیج یک Flutter plugin است. برای استفاده از آن باید SDK را در پروژه Flutter میزبان اضافه و تنظیم کنید.
 
 ## 1. افزودن دسترسی نوتیفیکیشن در Android
 
-فایل زیر را باز کنید:
+در پروژه Flutter اصلی، فایل AndroidManifest مربوط به اپ را باز کنید. در بیشتر پروژه‌ها این فایل در مسیر زیر است:
 
 ```txt
 android/app/src/main/AndroidManifest.xml
-````
-
-سپس این permission را داخل تگ اصلی `manifest` اضافه کنید:
-
-```xml
-<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 ```
 
----
+سپس permission زیر را داخل تگ اصلی `manifest` قرار دهید:
 
-## 2. دانلود فایل تنظیمات SDK
+```xml
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+```
 
-از پنل سایت، فایل JSON مربوط به اپلیکیشن خود را دانلود کنید.
+## 2. قرار دادن فایل تنظیمات SDK
 
-سپس نام فایل را به شکل زیر تغییر دهید:
+از پنل سایت، فایل JSON مربوط به اپلیکیشن خود را دانلود کنید و نام آن را به شکل زیر تغییر دهید:
 
 ```txt
 fetchy-config.json
 ```
 
-و آن را در مسیر زیر قرار دهید:
+سپس فایل را در مسیر زیر در پروژه Flutter میزبان قرار دهید:
 
 ```txt
 android/app/src/main/assets
 ```
 
-> اگر پوشه `assets` وجود ندارد، آن را بسازید.
-
----
+اگر پوشه `assets` وجود ندارد، آن را بسازید.
 
 ## 3. افزودن پکیج به `pubspec.yaml`
 
@@ -49,17 +44,15 @@ dependencies:
       ref: main
 ```
 
-سپس دستور زیر را اجرا کنید:
+سپس این دستور را اجرا کنید:
 
 ```bash
 flutter pub get
 ```
 
----
-
 ## 4. مقداردهی اولیه SDK
 
-در اولین صفحه یا کلاس اصلی اپلیکیشن، متد `initialize` را داخل `initState` فراخوانی کنید:
+در اولین صفحه یا کلاس اصلی اپلیکیشن، متد `initialize` را در `initState` فراخوانی کنید:
 
 ```dart
 @override
@@ -69,8 +62,10 @@ void initState() {
 }
 ```
 
----
+## نکته
+
+اگر در پروژه خود از چند flavor یا ماژول Android استفاده می‌کنید، مسیر فایل manifest و پوشه assets را با ساختار همان پروژه تطبیق دهید.
 
 ## نصب کامل شد
 
-بعد از انجام مراحل بالا، Fetchy SDK روی پروژه Flutter شما فعال خواهد شد.
+بعد از انجام مراحل بالا، Fetchy SDK در پروژه Flutter شما فعال خواهد شد.
