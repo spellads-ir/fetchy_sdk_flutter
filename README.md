@@ -62,17 +62,14 @@ id("com.google.devtools.ksp") version "2.3.7" apply false
 **قدم دوم:** در انتهای فایل، بعد از `include(":app")`، این کد را کپی کنید:
 
 ```kotlin
-import groovy.json.JsonSlurper
-import java.io.File
-
 // برای کار کردن fetchy_sdk_flutter لازم است. قبلش `flutter pub get` بزنید.
 run {
     val flutterRoot = settingsDir.parentFile ?: return@run
-    val depsFile = File(flutterRoot, ".flutter-plugins-dependencies")
+    val depsFile = java.io.File(flutterRoot, ".flutter-plugins-dependencies")
     if (!depsFile.exists()) return@run
 
     @Suppress("UNCHECKED_CAST")
-    val meta = JsonSlurper().parseText(depsFile.readText()) as Map<String, Any>
+    val meta = groovy.json.JsonSlurper().parseText(depsFile.readText()) as Map<String, Any>
     val plugins = meta["plugins"] as? Map<String, Any> ?: return@run
     val androidPlugins = plugins["android"] as? List<*> ?: return@run
 
@@ -80,7 +77,7 @@ run {
         val plugin = entry as? Map<*, *> ?: continue
         if (plugin["name"] == "fetchy_sdk_flutter") {
             val path = plugin["path"] as? String ?: continue
-            apply(from = File(path, "android/include_fetchy_sdk.settings.gradle.kts"))
+            apply(from = java.io.File(path, "android/include_fetchy_sdk.settings.gradle.kts"))
             break
         }
     }

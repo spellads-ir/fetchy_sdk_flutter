@@ -40,7 +40,7 @@ flutter pub get
 flutter run
 ```
 
-تنظیمات Gradle و AndroidManifest در این نمونه از قبل انجام شده؛ نیازی به تغییرشان نیست.
+تنظیمات Gradle و AndroidManifest در این نمونه از قبل انجام شده (مثلاً [`android/settings.gradle.kts`](android/settings.gradle.kts) همان کدی است که در README اصلی آمده)؛ نیازی به تغییرشان نیست.
 
 ---
 
