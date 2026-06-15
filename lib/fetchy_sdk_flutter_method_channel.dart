@@ -16,6 +16,11 @@ class MethodChannelFetchySdkFlutter extends FetchySdkFlutterPlatform {
   }
 
   @override
+  Future<String?> getToken() async {
+    return methodChannel.invokeMethod<String>('getToken');
+  }
+
+  @override
   Future<FetchyNotificationPermissionStatus>
   getNotificationPermissionStatus() async {
     final rawStatus = await methodChannel.invokeMethod<String>(

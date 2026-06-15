@@ -1,0 +1,10 @@
+{
+  "environment": "production",
+  "base_url": "https://fetchy.notifhub.com",
+  "pull": {
+    "enabled": true,
+    "api_key": "YOUR_API_KEY_HERE",
+    "worker_enabled": true,
+    "poll_interval_minutes": 15
+  }
+}

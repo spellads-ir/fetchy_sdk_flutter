@@ -1,0 +1,8 @@
+{
+  "yaml.schemas": {
+    ".vscode/schemas/pubspec.json": [
+      "pubspec.yaml",
+      "**/pubspec.yaml"
+    ]
+  }
+}

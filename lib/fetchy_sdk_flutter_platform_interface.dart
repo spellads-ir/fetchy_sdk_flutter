@@ -29,6 +29,10 @@ abstract class FetchySdkFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('initialize() has not been implemented.');
   }
 
+  Future<String?> getToken() {
+    throw UnimplementedError('getToken() has not been implemented.');
+  }
+
   Future<FetchyNotificationPermissionStatus>
   getNotificationPermissionStatus() {
     throw UnimplementedError(

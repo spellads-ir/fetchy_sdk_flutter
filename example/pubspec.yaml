@@ -1,0 +1,23 @@
+name: fetchy_sdk_flutter_example
+description: Example app demonstrating the Fetchy SDK Flutter plugin.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  fetchy_sdk_flutter:
+    path: ../
+  permission_handler: ^12.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

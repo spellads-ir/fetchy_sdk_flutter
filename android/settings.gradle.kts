@@ -54,12 +54,12 @@ fun unzipGitHubArchive(archiveFile: File, targetDir: File) {
 }
 
 fun resolveEmbeddedSdkProjectDir(): File {
-	if (localSdkProjectDir.exists()) {
-		return localSdkProjectDir
-	}
-
 	if (importedSdkProjectDir.exists()) {
 		return importedSdkProjectDir
+	}
+
+	if (localSdkProjectDir.exists()) {
+		return localSdkProjectDir
 	}
 
 	val moduleBuildFile = downloadedSdkProjectDir.resolve("build.gradle.kts")

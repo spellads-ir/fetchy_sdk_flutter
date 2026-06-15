@@ -31,6 +31,9 @@ public final class FetchySdkFlutterPlugin implements FlutterPlugin, MethodChanne
                     result.error("initialize_failed", error.getMessage(), null);
                 }
                 break;
+            case "getToken":
+                result.success(Fetchy.getToken(applicationContext));
+                break;
             case "getNotificationPermissionStatus":
                 result.success(
                     Fetchy.getNotificationPermissionStatus(applicationContext)
