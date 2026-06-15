@@ -53,11 +53,26 @@ flutter pub get
 android/settings.gradle.kts
 ```
 
-**قدم اول:** داخل بلوک `plugins` این خط را اضافه کنید:
+**قدم اول:** داخل بلوک `plugins` فقط **یک خط KSP** اضافه کنید. نسخهٔ KSP باید **دقیقاً با نسخهٔ Kotlin همان فایل** هماهنگ باشد — Kotlin و AGP را عوض نکنید، همان چیزی که `flutter create` گذاشته کافی است.
+
+ابتدا خط Kotlin پروژه‌تان را پیدا کنید، مثلاً:
 
 ```kotlin
-id("com.google.devtools.ksp") version "2.3.7" apply false
+id("org.jetbrains.kotlin.android") version "2.2.20" apply false
 ```
+
+بعد KSP متناظر را اضافه کنید (همان نسخهٔ Kotlin + پسوند KSP از [releases](https://github.com/google/ksp/releases)):
+
+```kotlin
+id("com.google.devtools.ksp") version "2.2.20-2.0.4" apply false
+```
+
+| Kotlin در پروژه شما | KSP (نمونه) |
+|---------------------|-------------|
+| `2.2.20` | `2.2.20-2.0.4` |
+| `2.3.20` | `2.3.7` |
+
+> **مهم:** نسخهٔ ثابت `2.3.7` را کورکورانه اضافه نکنید. اگر Kotlin شما `2.2.20` است و KSP را `2.3.7` بگذارید، build می‌شکند.
 
 **قدم دوم:** در انتهای فایل، بعد از `include(":app")`، این کد را کپی کنید:
 
@@ -224,6 +239,8 @@ flutter run
 | مشکل | راه‌حل |
 |------|--------|
 | خطای `:fetchy-sdk` در build | `flutter pub get` بزن، بعد دوباره build کن |
+| `[ksp] unexpected jvm signature V` | KSP را با Kotlin هماهنگ کن (جدول بالا). Kotlin/AGP را بالاتر از تمپلیت Flutter نبرید |
+| هشدار Kotlin Gradle Plugin | از آخرین نسخهٔ `fetchy_sdk_flutter` استفاده کن |
 | توکن نمی‌آید | چند ثانیه صبر کن؛ اجازهٔ نوتیف و `fetchy-config.json` را چک کن |
 | چند flavor داری | مسیر `AndroidManifest` و `assets` را با flavor خودت تطبیق بده |
 
