@@ -1,4 +1,4 @@
-## Unreleased
+## 1.3.11
 
 - Update the embedded Android SDK to include Firebase Cloud Messaging support.
 - Document Firebase setup, data-only payloads, and forwarding from app-owned messaging services.
