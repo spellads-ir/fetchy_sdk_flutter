@@ -123,6 +123,61 @@ android/app/src/main/AndroidManifest.xml
 - `INTERNET` → برای ارتباط با سرور Fetchy
 - `POST_NOTIFICATIONS` → برای ارسال نوتیفیکیشن
 
+### راه‌اندازی Firebase Cloud Messaging (FCM)
+
+برای دریافت پوش نوتیفیکیشن، اپ را در Firebase ثبت کنید و فایل `google-services.json` را در مسیر `android/app/google-services.json` قرار دهید. سپس Google Services plugin را اضافه و روی ماژول app اعمال کنید.
+
+در بلوک `plugins` فایل `android/settings.gradle.kts`:
+
+```kotlin
+id("com.google.gms.google-services") version "4.4.4" apply false
+```
+
+در بلوک `plugins` فایل `android/app/build.gradle.kts`:
+
+```kotlin
+id("com.google.gms.google-services")
+```
+
+Fetchy سرویس native مربوط به Firebase را خودش ثبت می‌کند؛ برای حالت معمول به پکیج Dart `firebase_messaging` یا کد اضافی در Dart نیاز ندارید. پیام‌های ارسالی باید **data-only** باشند و بلوک سطح‌بالای `notification` نداشته باشند تا Firebase و Fetchy یک نوتیفیکیشن را دو بار نمایش ندهند.
+
+اگر اپ شما از قبل `FirebaseMessagingService` اختصاصی دارد، فقط همان سرویس را برای `MESSAGING_EVENT` نگه دارید و رویدادها را به Fetchy forward کنید. در این حالت، سرویس پیش‌فرض Fetchy را با manifest merger حذف کنید:
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <application>
+        <service
+            android:name="com.fetchy.sdk.internal.fcm.FetchyFirebaseMessagingService"
+            tools:node="remove" />
+    </application>
+</manifest>
+```
+
+همچنین `firebase-messaging` را به dependencies ماژول app اضافه کنید تا کلاس‌های Firebase برای سرویس اختصاصی در دسترس باشند:
+
+```kotlin
+implementation("com.google.firebase:firebase-messaging:24.1.1")
+```
+
+نمونهٔ سرویس Kotlin:
+
+```kotlin
+import com.fetchy.sdk.Fetchy
+import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
+
+class AppFirebaseMessagingService : FirebaseMessagingService() {
+    override fun onNewToken(token: String) {
+        Fetchy.onNewToken(this, token)
+    }
+
+    override fun onMessageReceived(message: RemoteMessage) {
+        Fetchy.handleRemoteMessage(this, message.data)
+    }
+}
+```
+
 ---
 
 ### مرحله ۴ — گذاشتن فایل تنظیمات
@@ -213,7 +268,7 @@ Future<void> _initializeSdk() async {
 ## متدهای دیگر (اختیاری)
 
 | متد | کاربرد |
-|-----|--------|
+| ----- | -------- |
 | `getToken()` | خواندن توکن الان (اگر هنوز نیامده `null` برمی‌گردد) |
 | `getNotificationPermissionStatus()` | ببین کاربر اجازهٔ نوتیف داده یا نه |
 | `syncNotificationPermissionStatus()` | وضعیت اجازه را با سرور Fetchy همگام کن |
@@ -237,7 +292,7 @@ flutter run
 ## اگر گیر کردی
 
 | مشکل | راه‌حل |
-|------|--------|
+| ------ | -------- |
 | خطای `:fetchy-sdk` در build | `flutter pub get` بزن، بعد دوباره build کن |
 | `[ksp] unexpected jvm signature V` | KSP را با Kotlin هماهنگ کن (جدول بالا). Kotlin/AGP را بالاتر از تمپلیت Flutter نبرید |
 | هشدار Kotlin Gradle Plugin | از آخرین نسخهٔ `fetchy_sdk_flutter` استفاده کن |

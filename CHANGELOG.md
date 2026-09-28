@@ -1,3 +1,8 @@
+## Unreleased
+
+- Update the embedded Android SDK to include Firebase Cloud Messaging support.
+- Document Firebase setup, data-only payloads, and forwarding from app-owned messaging services.
+
 ## 1.3.10
 
 - Replace the Android local AAR fallback with source-based SDK bootstrapping so consuming Flutter apps can build release APKs without a published Maven artifact.
