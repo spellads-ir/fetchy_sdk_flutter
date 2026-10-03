@@ -6,7 +6,7 @@ import java.util.zip.ZipInputStream
 // Applied from the host app's android/settings.gradle.kts after the Flutter plugin loader.
 // Resolves and includes :fetchy-sdk so fetchy_sdk_flutter can depend on it as a project.
 
-val embeddedSdkCommit = "1c8d1cd88ba75e1e335ab95865f4426176632a12"
+val embeddedSdkCommit = "09a74ef09634322556d0d88f572e2ec0e04b7577"
 val embeddedSdkArchiveUrl = "https://github.com/spellads-ir/fetchy_sdk/archive/$embeddedSdkCommit.zip"
 
 fun downloadFile(sourceUrl: String, targetFile: File) {

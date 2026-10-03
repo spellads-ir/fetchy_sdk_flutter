@@ -1,3 +1,8 @@
+## 1.3.12
+
+- Update the embedded Android SDK to the latest `fetchy_sdk` main revision.
+- Keep the source-download fallback pinned to the same SDK revision.
+
 ## 1.3.11
 
 - Update the embedded Android SDK to include Firebase Cloud Messaging support.

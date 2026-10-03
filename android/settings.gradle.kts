@@ -3,7 +3,7 @@ import java.util.zip.ZipInputStream
 
 rootProject.name = "fetchy_sdk_flutter"
 
-val embeddedSdkCommit = "f021bb7456f211e8877295a67868a9b0472ccaa2"
+val embeddedSdkCommit = "09a74ef09634322556d0d88f572e2ec0e04b7577"
 val embeddedSdkArchiveUrl = "https://github.com/spellads-ir/fetchy_sdk/archive/$embeddedSdkCommit.zip"
 val localSdkProjectDir = File(settingsDir, "../../fetchy_sdk/fetchy-sdk")
 val importedSdkProjectDir = File(settingsDir, "third_party/fetchy-android/fetchy-sdk")
