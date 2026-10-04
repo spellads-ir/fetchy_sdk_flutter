@@ -1,3 +1,8 @@
+## 1.3.14
+
+- Return inserted row IDs from the remaining Room DAO write methods, completing Kotlin 2.2 KSP compatibility.
+- Resolve the embedded SDK only from the vendored source or its pinned archive, never an incidental sibling cache checkout.
+
 ## 1.3.13
 
 - Update the embedded Android SDK to return affected-row counts from Room write queries, restoring KSP compatibility with Kotlin 2.2.

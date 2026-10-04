@@ -6,7 +6,7 @@ import java.util.zip.ZipInputStream
 // Applied from the host app's android/settings.gradle.kts after the Flutter plugin loader.
 // Resolves and includes :fetchy-sdk so fetchy_sdk_flutter can depend on it as a project.
 
-val embeddedSdkCommit = "e4d392e46bbaae990cd30e4f7089e77f5e2e9f06"
+val embeddedSdkCommit = "e3a4c7a19464b4d427a6e37be05cf99ce3cd6d61"
 val embeddedSdkArchiveUrl = "https://github.com/spellads-ir/fetchy_sdk/archive/$embeddedSdkCommit.zip"
 
 fun downloadFile(sourceUrl: String, targetFile: File) {
@@ -52,7 +52,6 @@ fun unzipGitHubArchive(archiveFile: File, targetDir: File) {
 }
 
 fun resolveFetchySdkProjectDir(pluginAndroidDir: File): File {
-    val localSdkProjectDir = File(pluginAndroidDir, "../../fetchy_sdk/fetchy-sdk")
     val importedSdkProjectDir = File(pluginAndroidDir, "third_party/fetchy-android/fetchy-sdk")
     val downloadedSdkRootDir = File(pluginAndroidDir, "build/embedded-sdk/fetchy_sdk-$embeddedSdkCommit")
     val downloadedSdkProjectDir = File(downloadedSdkRootDir, "fetchy-sdk")
@@ -64,11 +63,6 @@ fun resolveFetchySdkProjectDir(pluginAndroidDir: File): File {
         return importedSdkProjectDir
     }
 
-    if (localSdkProjectDir.resolve("build.gradle.kts").exists() ||
-        localSdkProjectDir.resolve("build.gradle").exists()
-    ) {
-        return localSdkProjectDir
-    }
 
     val moduleBuildFile = downloadedSdkProjectDir.resolve("build.gradle.kts")
     if (!moduleBuildFile.exists()) {
