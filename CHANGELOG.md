@@ -1,3 +1,8 @@
+## 1.3.13
+
+- Update the embedded Android SDK to return affected-row counts from Room write queries, restoring KSP compatibility with Kotlin 2.2.
+- Keep the source-download fallback pinned to the same Android SDK revision.
+
 ## 1.3.12
 
 - Update the embedded Android SDK to the latest `fetchy_sdk` main revision.
