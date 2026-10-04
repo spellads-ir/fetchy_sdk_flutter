@@ -1,3 +1,8 @@
+## 1.3.15
+
+- Update the embedded Android SDK to Room 2.7.0, which generates Kotlin DAO implementations compatible with Kotlin 2.2 and KSP2.
+- Align the embedded Android SDK toolchain with Kotlin 2.2.20 and KSP 2.2.20-2.0.4.
+
 ## 1.3.14
 
 - Return inserted row IDs from the remaining Room DAO write methods, completing Kotlin 2.2 KSP compatibility.
